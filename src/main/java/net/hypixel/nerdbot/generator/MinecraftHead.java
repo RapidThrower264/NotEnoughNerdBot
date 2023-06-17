@@ -78,13 +78,12 @@ public class MinecraftHead {
             case LEFT_SIDE, LEFT_HAT_SIDE -> {
                 pixelTrackUp = sideDistance;
                 startingX -= xDistance * 8;
-                startingY += yDistance * 6;
+                startingY += (sideDistance - yDistance) * 8;
                 yDistance = -yDistance;
             }
             case TOP_SIDE, TOP_HAT_SIDE -> {
                 pixelTrackUp = yDistance;
                 newLineDisplacement = -1;
-                startingY -= sideDistance;
             }
             default -> pixelTrackUp = 0;
         }
@@ -125,9 +124,9 @@ public class MinecraftHead {
         drawFace(startingX + HeadTransforms.X_DISTANCE_HAT * 8, startingY - HeadTransforms.Y_DISTANCE_HAT * 8, true, Side.LEFT_HAT_SIDE, Face.HAT_RIGHT);
 
         // draws the entire head
+        drawFace(startingX - HeadTransforms.X_DISTANCE * 8, startingY - HeadTransforms.Y_DISTANCE - 3 * HeadTransforms.SQUARE_DISTANCE, true, Side.RIGHT_SIDE, Face.HEAD_BACK);
+        drawFace(startingX + HeadTransforms.X_DISTANCE * 8, startingY - HeadTransforms.Y_DISTANCE - 3 * HeadTransforms.SQUARE_DISTANCE, true, Side.LEFT_SIDE, Face.HEAD_RIGHT);
         drawFace(startingX, startingY + HeadTransforms.SQUARE_DISTANCE * 8, false, Side.TOP_SIDE, Face.HEAD_BOTTOM);
-        drawFace(startingX - HeadTransforms.X_DISTANCE * 8, startingY - HeadTransforms.Y_DISTANCE * 8, true, Side.RIGHT_SIDE, Face.HEAD_BACK);
-        drawFace(startingX + HeadTransforms.X_DISTANCE * 8, startingY - HeadTransforms.Y_DISTANCE * 8, true, Side.LEFT_SIDE, Face.HEAD_RIGHT);
         drawFace(startingX, startingY, false, Side.TOP_SIDE, Face.HEAD_TOP);
         drawFace(startingX, startingY, false, Side.RIGHT_SIDE, Face.HEAD_FRONT);
         drawFace(startingX, startingY, false, Side.LEFT_SIDE, Face.HEAD_LEFT);
@@ -168,11 +167,12 @@ public class MinecraftHead {
  */
 class HeadTransforms {
     public static final int SQUARE_DISTANCE = 33;
-    public static final double X_DISTANCE = SQUARE_DISTANCE * Math.cos(Math.toRadians(30));
-    public static final double Y_DISTANCE = SQUARE_DISTANCE * Math.sin(Math.toRadians(30));
+    public static final int PROJECTION_ANGLE = 26;
+    public static final double X_DISTANCE = SQUARE_DISTANCE * Math.cos(Math.toRadians(PROJECTION_ANGLE));
+    public static final double Y_DISTANCE = SQUARE_DISTANCE * Math.sin(Math.toRadians(PROJECTION_ANGLE));
     public static final double SQUARE_HAT_DISTANCE = SQUARE_DISTANCE * 1.07;
-    public static final double X_DISTANCE_HAT = SQUARE_HAT_DISTANCE * Math.cos(Math.toRadians(30));
-    public static final double Y_DISTANCE_HAT = SQUARE_HAT_DISTANCE * Math.sin(Math.toRadians(30));
+    public static final double X_DISTANCE_HAT = SQUARE_HAT_DISTANCE * Math.cos(Math.toRadians(PROJECTION_ANGLE));
+    public static final double Y_DISTANCE_HAT = SQUARE_HAT_DISTANCE * Math.sin(Math.toRadians(PROJECTION_ANGLE));
 
     private HeadTransforms() {
     }
@@ -182,12 +182,12 @@ class HeadTransforms {
  * Describes the 4 points of the square which fit the isometric pattern
  */
 enum Side {
-    LEFT_SIDE(HeadTransforms.SQUARE_DISTANCE, new double[]{0, 0, 0, HeadTransforms.SQUARE_DISTANCE, HeadTransforms.X_DISTANCE, HeadTransforms.SQUARE_DISTANCE + HeadTransforms.Y_DISTANCE, HeadTransforms.X_DISTANCE, HeadTransforms.Y_DISTANCE}, HeadTransforms.X_DISTANCE, HeadTransforms.Y_DISTANCE),
+    LEFT_SIDE(HeadTransforms.SQUARE_DISTANCE, new double[]{0, 0, 0, -HeadTransforms.SQUARE_DISTANCE, HeadTransforms.X_DISTANCE, -HeadTransforms.SQUARE_DISTANCE + HeadTransforms.Y_DISTANCE, HeadTransforms.X_DISTANCE, HeadTransforms.Y_DISTANCE}, HeadTransforms.X_DISTANCE, HeadTransforms.Y_DISTANCE),
     RIGHT_SIDE(HeadTransforms.SQUARE_DISTANCE, new double[]{0, 0, 0, HeadTransforms.SQUARE_DISTANCE, HeadTransforms.X_DISTANCE, HeadTransforms.SQUARE_DISTANCE - HeadTransforms.Y_DISTANCE, HeadTransforms.X_DISTANCE, -HeadTransforms.Y_DISTANCE}, HeadTransforms.X_DISTANCE, HeadTransforms.Y_DISTANCE),
-    TOP_SIDE(HeadTransforms.SQUARE_DISTANCE, new double[]{0, 0, -HeadTransforms.X_DISTANCE, HeadTransforms.Y_DISTANCE, 0, HeadTransforms.SQUARE_DISTANCE, HeadTransforms.X_DISTANCE, HeadTransforms.Y_DISTANCE}, HeadTransforms.X_DISTANCE, HeadTransforms.Y_DISTANCE),
-    LEFT_HAT_SIDE(HeadTransforms.SQUARE_HAT_DISTANCE, new double[]{0, 0, 0, HeadTransforms.SQUARE_HAT_DISTANCE, HeadTransforms.X_DISTANCE_HAT, HeadTransforms.SQUARE_HAT_DISTANCE + HeadTransforms.Y_DISTANCE_HAT, HeadTransforms.X_DISTANCE_HAT, HeadTransforms.Y_DISTANCE_HAT}, HeadTransforms.X_DISTANCE_HAT, HeadTransforms.Y_DISTANCE_HAT),
+    TOP_SIDE(HeadTransforms.SQUARE_DISTANCE, new double[]{0, 0, -HeadTransforms.X_DISTANCE, -HeadTransforms.Y_DISTANCE, 0, -2 * HeadTransforms.Y_DISTANCE, HeadTransforms.X_DISTANCE, -HeadTransforms.Y_DISTANCE}, HeadTransforms.X_DISTANCE, HeadTransforms.Y_DISTANCE),
+    LEFT_HAT_SIDE(HeadTransforms.SQUARE_HAT_DISTANCE, new double[]{0, 0, 0, -HeadTransforms.SQUARE_HAT_DISTANCE, HeadTransforms.X_DISTANCE_HAT, -HeadTransforms.SQUARE_HAT_DISTANCE + HeadTransforms.Y_DISTANCE_HAT, HeadTransforms.X_DISTANCE_HAT, HeadTransforms.Y_DISTANCE_HAT}, HeadTransforms.X_DISTANCE_HAT, HeadTransforms.Y_DISTANCE_HAT),
     RIGHT_HAT_SIDE(HeadTransforms.SQUARE_HAT_DISTANCE, new double[]{0, 0, 0, HeadTransforms.SQUARE_HAT_DISTANCE, HeadTransforms.X_DISTANCE_HAT, HeadTransforms.SQUARE_HAT_DISTANCE - HeadTransforms.Y_DISTANCE_HAT, HeadTransforms.X_DISTANCE_HAT, -HeadTransforms.Y_DISTANCE_HAT}, HeadTransforms.X_DISTANCE_HAT, HeadTransforms.Y_DISTANCE_HAT),
-    TOP_HAT_SIDE(HeadTransforms.SQUARE_HAT_DISTANCE, new double[]{0, 0, -HeadTransforms.X_DISTANCE_HAT, HeadTransforms.Y_DISTANCE_HAT, 0, HeadTransforms.SQUARE_HAT_DISTANCE, HeadTransforms.X_DISTANCE_HAT, HeadTransforms.Y_DISTANCE_HAT}, HeadTransforms.X_DISTANCE_HAT, HeadTransforms.Y_DISTANCE_HAT);
+    TOP_HAT_SIDE(HeadTransforms.SQUARE_HAT_DISTANCE, new double[]{0, 0, -HeadTransforms.X_DISTANCE_HAT, -HeadTransforms.Y_DISTANCE_HAT, 0, -2 * HeadTransforms.Y_DISTANCE_HAT, HeadTransforms.X_DISTANCE_HAT, -HeadTransforms.Y_DISTANCE_HAT}, HeadTransforms.X_DISTANCE_HAT, HeadTransforms.Y_DISTANCE_HAT);
 
     private final double distance;
     private final double[] transforms;
