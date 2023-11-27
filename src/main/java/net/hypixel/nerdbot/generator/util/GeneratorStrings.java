@@ -156,8 +156,10 @@ public class GeneratorStrings {
     public static final String MULTIPLE_ITEM_SKULL_DATA = "It seems that there is either too many or not enough skull Base64 strings inside the SkullOwner.Properties.textures array. Should check that there is only one (if not, ping a Bot Developer)";
     public static final String INVALID_ITEM_SKULL_DATA = "It seems that there is something wrong with the value given for the SkullOwner.Properties.textures array. You should probably check that it is in a JSON style (or ping a Bot Developer).";
     public static final String INVALID_BASE_64_SKIN_URL = "It seems that you have entered an invalid Base64 skin url. Please double-check that it is right";
-    public static final String ITEM_PARSE_JSON_FORMAT = "This JSON object seems to not be valid.\nYou should either copy it from in game, or follow a similar format to:```json\n{\n\tid: \"minecraft:stick\",\n\ttag: {\n\t\tdisplay: {\n\t\t\tLore: [\"§fJust your ordinary stick.\", \"\", \"§f§lCOMMON STICK\"],\n\t\t\tName: \"§fSticky\"\n\t\t}\n\t}\n}```";
+    public static final String ITEM_PARSE_JSON_FORMAT = "This JSON object seems to not be valid.\nYou should copy it directly from in game with a SkyBlock mod.";
     public static final String ITEM_PARSE_COMMAND = "Here is a Nerd Bot generation command if you want it!\n```%s```";
+    public static final String ITEM_PARSE_ALTERNATIVE_INFO = "It seems that you wanted to parse this item and display the item. However, this JSON data doesn't contain all of the information required to complete it. There was some data that could be extracted though: `extra_modifiers`: `%s`";
+    public static final String ITEM_PARSE_NO_ALTERNATIVE_INFO = "It seems that you wanted to parse this item and display the item. However, this JSON data doesn't contain all the information required to complete it.";
 
     // item gen parse help messages
     public static final String ITEM_PARSE_INFO = "The /%1$s command is extremely useful for being able to copy the NBT of items from in game and convert them into an Item Gen command so that you can modify them.\nUsing this can be extremely helpful for newer users as they will have a base to work from, or easily allows you to modify an existing item for rewording or upgrades.".formatted(COMMAND_PREFIX);
